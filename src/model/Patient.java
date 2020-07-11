@@ -13,17 +13,21 @@ public class Patient implements Serializable {
     private String name;
     private String socialSecurityNumber;
     private Address address;
+    private String email;
+    private String phoneNumber;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     
     // CONSTRUCTORS
 
     public Patient() {}
-    public Patient(Integer id, String name, String socialSecurityNumber, Address address, Timestamp createdAt, Timestamp updateAt) {
+    public Patient(Integer id, String name, String socialSecurityNumber, Address address, String email, String phoneNumber, Timestamp createdAt, Timestamp updateAt) {
         this.id = id;
         this.name = name;
         this.socialSecurityNumber = socialSecurityNumber;
         this.address = address;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
         this.createdAt = createdAt;
         this.updatedAt = updateAt;
     }
@@ -60,6 +64,22 @@ public class Patient implements Serializable {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
     
     public Timestamp getCreatedAt() {
