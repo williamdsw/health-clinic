@@ -41,7 +41,7 @@ public class DatabaseConnection {
     }
     
     public static void disconnect (Connection connection) throws SQLException {
-        if (connection != null && connection.isClosed()) {
+        if (connection != null && !connection.isClosed()) {
             connection.close();
             return;
         }
