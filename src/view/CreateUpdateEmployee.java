@@ -1,30 +1,34 @@
 package view;
 
-import classes.Funcionario;
 import controller.service.AddressService;
 import controller.service.EmployeeService;
+import controller.service.ZipCodeService;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.swing.Icon;
 import javax.swing.JComponent;
-import javax.swing.JInternalFrame;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 import model.Address;
 import model.Employee;
+import model.ZipCode;
 
 public class CreateUpdateEmployee extends javax.swing.JFrame {
     
     // FIELDS
     
     private Employee employee = null;
-    private AddressService addressService = new AddressService();
+    private final AddressService addressService = new AddressService();
+    private final EmployeeService service = new EmployeeService();
+    private final ZipCodeService zipCodeService = new ZipCodeService();
 
     // FUNCTIONS
     
@@ -59,7 +63,7 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
             });
         }
         catch (Exception ex) {
-            System.out.println("CreateUpdateEmployee:54 = " + ex.getMessage());
+            System.out.println("CreateUpdateEmployee:66 = " + ex.getMessage());
         }
     }
     
@@ -73,93 +77,113 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
     
     private void setComponentsDefaultValues () {
         
-        this.setTitle("Employee");
-        this.setResizable(true);
-        comboAddress.setEnabled(false);
-        checkAddress.setSelected(false);
-        radioExisting.setSelected(false);
-        radioExisting.setEnabled(false);
-        radioNew.setSelected(false);
-        radioNew.setEnabled(false);
-        toggleAddressComponents(false);
-        
-        Font font = new Font("Monospaced", Font.BOLD, 16);
-        
-        JLabel[] labels = { 
-            labelCity, labelComplement, labelLicenseNumber,
-            labelName, labelNumber, labelRole, labelSocialSecurityNumber,
-            labelState, labelStreet, labelZipCode, labelCountry, labelEmail,
-            labelPhoneNumber
-        };
-        
-        JComponent[] inputs = {
-            inputCity, inputComplement, inputLicenseNumber, inputName, inputNumber, 
-            comboRole, inputSocialSecurityNumber, inputState, inputStreet, inputZipCode,
-            inputCountry, inputEmail, inputPhoneNumber
-        };
-        
-        String[] labelsTexts = {
-            "* City ", "Complement", "* License Number ", "* Name ", "Number",
-            "* Role ", "* SSN ", "* State ", "* Street ", "* Zip Code ", "* Country",
-            "* Email", "Phone Number"
-        };
-        
-        for (int index = 0; index < labels.length; index++) {
-            labels[index].setText(labelsTexts[index]);
-            labels[index].setFont(font);
-            inputs[index].setFont(font);
+        try {
+            this.setTitle("Employee");
+            this.setResizable(false);
+            comboAddress.setEnabled(false);
+            checkAddress.setSelected(false);
+            radioExisting.setSelected(false);
+            radioExisting.setEnabled(false);
+            radioNew.setSelected(false);
+            radioNew.setEnabled(false);
+            toggleAddressComponents(false);
+
+            Font labelFont = new Font("Monospaced", Font.BOLD, 16);
+            Font inputFont = new Font("Monospaced", Font.PLAIN, 16);
+
+            JLabel[] labels = {
+                labelCity, labelComplement, labelLicenseNumber,
+                labelName, labelNumber, labelRole, labelSocialSecurityNumber,
+                labelState, labelStreet, labelZipCode, labelCountry, labelEmail,
+                labelPhoneNumber
+            };
+
+            JComponent[] inputs = {
+                inputCity, inputComplement, inputLicenseNumber, inputName, inputNumber,
+                comboRole, inputSocialSecurityNumber, inputState, inputStreet, inputZipCode,
+                inputCountry, inputEmail, inputPhoneNumber, checkAddress, radioExisting,
+                radioNew, comboAddress
+            };
+
+            String[] labelsTexts = {
+                "* City ", "Complement", "* License Number ", "* Name ", "Number",
+                "* Role ", "* SSN ", "* State ", "* Street ", "* Zip Code ", "* Country",
+                "* Email", "Phone Number"
+            };
+
+            int index = 0;
+            for (JLabel label : labels) {
+                label.setText(labelsTexts[index]);
+                label.setFont(labelFont);
+                index++;
+            }
+
+            for (JComponent component : inputs) {
+                component.setFont(inputFont);
+            }
+
+            buttonSave.setFont(labelFont);
+            addressPanel.setFont(labelFont);
+
+            JFormattedTextField.AbstractFormatter ssnFormatter = new MaskFormatter("###-##-####");
+            JFormattedTextField.AbstractFormatter zipCodeFormatter = new MaskFormatter("#####");
+            inputSocialSecurityNumber.setFormatterFactory(new DefaultFormatterFactory(ssnFormatter));
+            inputZipCode.setFormatterFactory(new DefaultFormatterFactory(zipCodeFormatter));
+        } 
+        catch (Exception ex) {
+            System.out.println("");
         }
     }
     
     private void validation (boolean isUpdate) {
         Set<String> requiredFields = new HashSet<>();
-        
+
         if (inputLicenseNumber.getText().isEmpty()) {
             requiredFields.add(labelLicenseNumber.getText());
         }
-        
+
         if (inputName.getText().isEmpty()) {
             requiredFields.add(labelName.getText());
         }
-        
+
         if (comboRole.getSelectedIndex() == 0) {
             requiredFields.add(labelRole.getText());
         }
-        
-        if (inputSocialSecurityNumber.getText().isEmpty() || inputSocialSecurityNumber.getText().length() != 14) {
+
+        if (inputSocialSecurityNumber.getText().isEmpty() || inputSocialSecurityNumber.getText().trim().length() != 11) {
             requiredFields.add(labelSocialSecurityNumber.getText());
         }
-        
+
         if (inputEmail.getText().isEmpty()) {
             requiredFields.add(labelEmail.getText());
         }
-        
+
         if (checkAddress.isSelected() && radioExisting.isSelected()) {
             if (comboAddress.getSelectedIndex() == 0) {
-                requiredFields.add("*Existing Address");
-            }
-        else if (checkAddress.isSelected() && radioNew.isSelected()) {
-            if (inputZipCode.getText().isEmpty()) {
-                requiredFields.add(labelZipCode.getText());
-            }
+                requiredFields.add("* Existing Address");
+            } 
+            else if (checkAddress.isSelected() && radioNew.isSelected()) {
+                if (inputZipCode.getText().isEmpty()) {
+                    requiredFields.add(labelZipCode.getText());
+                }
 
-            if (inputCity.getText().isEmpty()) {
-                requiredFields.add(labelCity.getText());
-            }
+                if (inputCity.getText().isEmpty()) {
+                    requiredFields.add(labelCity.getText());
+                }
 
-            if (inputState.getText().isEmpty()) {
-                requiredFields.add(labelState.getText());
-            }
+                if (inputState.getText().isEmpty()) {
+                    requiredFields.add(labelState.getText());
+                }
 
-            if (inputCountry.getText().isEmpty()) {
-                requiredFields.add(labelCountry.getText());
+                if (inputCountry.getText().isEmpty()) {
+                    requiredFields.add(labelCountry.getText());
+                }
             }
         }
-    }
-        
+
         if (requiredFields.isEmpty()) {
-            save (isUpdate);
-        }
+            save(isUpdate);
+        } 
         else {
             JOptionPane.showMessageDialog(this, requiredFields);
         }
@@ -223,10 +247,9 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
                 employee.setUpdatedAt(updatedAt);
                 employee.setAddress(address);
 
-                EmployeeService service = new EmployeeService();
                 boolean success = (isUpdate ? service.update(employee) : service.insert(employee));
                 if (success) {
-                    JOptionPane.showConfirmDialog(this, "Operation has succeed! Go to employers search?", "Success", JOptionPane.INFORMATION_MESSAGE, JOptionPane.YES_NO_OPTION);
+                    JOptionPane.showConfirmDialog(this, "Operation has succeed! Go to employers search?", "Success", JOptionPane.INFORMATION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
                 }
                 else {
                     JOptionPane.showMessageDialog(this, "This operation has failed", "Error", JOptionPane.ERROR_MESSAGE);
@@ -262,8 +285,41 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
             comboAddress.setEnabled (false);
         });
         
+        inputZipCode.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent ev) {
+                
+                try {
+                    String zipCode = inputZipCode.getText();
+                    String regex = "[0-9]{5}";
+                    if (zipCode.trim().length() == 5) {
+                        if (zipCode.matches(regex) && ev.getKeyCode() == ev.VK_ENTER) {
+                            
+                            inputZipCode.setEnabled(false);
+
+                            ZipCode zipCodeResult = zipCodeService.search(zipCode);
+                            if (zipCodeResult.getError() != null) {
+                                inputZipCode.setText(null);
+                                inputZipCode.setEnabled(true);
+                                JOptionPane.showMessageDialog(CreateUpdateEmployee.this, zipCodeResult.getError());
+                            } 
+                            else {
+                                inputZipCode.setEnabled(true);
+                                inputCity.setText(zipCodeResult.getCity());
+                                inputState.setText(zipCodeResult.getState());
+                                inputCountry.setText(zipCodeResult.getCountry());
+                            }
+                        } 
+                    }
+                } 
+                catch (Exception e) {
+                    System.out.println("e: " + e.getMessage());
+                }
+            }
+        });
         
         buttonSave.addActionListener ((ev) -> {
+            
             System.out.println ("Clicked");
             validation(false);
             
@@ -320,6 +376,7 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
         radioExisting = new javax.swing.JRadioButton();
         radioNew = new javax.swing.JRadioButton();
         comboAddress = new javax.swing.JComboBox<>();
+        separator = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Employee");
@@ -328,71 +385,99 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
 
         mainPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        labelName.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
+        labelName.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
         labelName.setText("* Name:");
         labelName.setName("lbl_NOME"); // NOI18N
 
+        labelSocialSecurityNumber.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
         labelSocialSecurityNumber.setText("* SSN:");
         labelSocialSecurityNumber.setName("lbl_CPF"); // NOI18N
 
+        labelRole.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
         labelRole.setText("* Role:");
         labelRole.setName("lbl_CARGO"); // NOI18N
 
+        labelLicenseNumber.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
         labelLicenseNumber.setText("* License Number:");
         labelLicenseNumber.setName("lbl_CRM"); // NOI18N
 
+        labelEmail.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
         labelEmail.setText("* E-mail:");
         labelEmail.setName("lbl_CPF"); // NOI18N
 
+        labelPhoneNumber.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
         labelPhoneNumber.setText("Phone Number:");
         labelPhoneNumber.setName("lbl_CPF"); // NOI18N
 
+        inputName.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
         inputName.setName("txt_NOME"); // NOI18N
 
+        inputLicenseNumber.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
         inputLicenseNumber.setName("txt_CRM"); // NOI18N
 
+        inputEmail.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
         inputEmail.setName("txt_NOME"); // NOI18N
 
+        inputPhoneNumber.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
         inputPhoneNumber.setName("txt_NOME"); // NOI18N
+
+        inputSocialSecurityNumber.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
 
         comboRole.setToolTipText("");
         comboRole.setName("cmb_CARGO"); // NOI18N
 
+        buttonSave.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
         buttonSave.setText("Save");
         buttonSave.setName("bnt_CADASTRAR"); // NOI18N
 
-        addressPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("New Address"));
+        addressPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "New Address", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 0, 16))); // NOI18N
 
+        labelCity.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
         labelCity.setText("City:");
         labelCity.setName("lbl_CIDADE"); // NOI18N
 
+        labelStreet.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
         labelStreet.setText("Street");
         labelStreet.setName("lbl_BAIRRO"); // NOI18N
 
+        labelZipCode.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
         labelZipCode.setText("Zip Code:");
         labelZipCode.setName("lbl_CEP"); // NOI18N
 
+        labelNumber.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
         labelNumber.setText("Number:");
         labelNumber.setName("lnl_NUM"); // NOI18N
 
+        labelState.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
         labelState.setText("State:");
         labelState.setName("lbl_UF"); // NOI18N
 
+        labelComplement.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
         labelComplement.setText("Complement:");
         labelComplement.setName("lbl_COMPLEMENTO"); // NOI18N
 
+        labelCountry.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
         labelCountry.setText("Country:");
         labelCountry.setName("lbl_UF"); // NOI18N
 
+        inputCity.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
         inputCity.setName("txt_CIDADE"); // NOI18N
 
+        inputStreet.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
         inputStreet.setName("txt_BAIRRO"); // NOI18N
 
+        inputNumber.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
         inputNumber.setName("txt_NUM"); // NOI18N
 
+        inputComplement.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
         inputComplement.setName("txt_COMPLEMENTO"); // NOI18N
 
+        inputState.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
+
+        inputCountry.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
+
         inputZipCode.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat(""))));
+        inputZipCode.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
 
         javax.swing.GroupLayout addressPanelLayout = new javax.swing.GroupLayout(addressPanel);
         addressPanel.setLayout(addressPanelLayout);
@@ -402,41 +487,46 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(addressPanelLayout.createSequentialGroup()
-                        .addComponent(inputStreet, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(inputNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(inputComplement))
-                    .addGroup(addressPanelLayout.createSequentialGroup()
-                        .addGroup(addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(addressPanelLayout.createSequentialGroup()
-                                .addGap(172, 172, 172)
-                                .addComponent(labelState))
-                            .addGroup(addressPanelLayout.createSequentialGroup()
-                                .addComponent(inputCity, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(inputState, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(labelCity))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(addressPanelLayout.createSequentialGroup()
-                                .addComponent(labelCountry)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(inputCountry)))
-                    .addGroup(addressPanelLayout.createSequentialGroup()
-                        .addGroup(addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(addressPanelLayout.createSequentialGroup()
                                 .addComponent(labelStreet)
-                                .addGap(137, 137, 137)
-                                .addComponent(labelNumber)
-                                .addGap(76, 76, 76)
-                                .addComponent(labelComplement))
+                                .addGap(152, 152, 152))
+                            .addGroup(addressPanelLayout.createSequentialGroup()
+                                .addComponent(inputStreet)
+                                .addGap(18, 18, 18)))
+                        .addGroup(addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(inputNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelNumber)
+                            .addComponent(labelState))
+                        .addGroup(addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(addressPanelLayout.createSequentialGroup()
+                                .addGap(104, 104, 104)
+                                .addComponent(labelCountry)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(addressPanelLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(inputComplement)
+                                    .addGroup(addressPanelLayout.createSequentialGroup()
+                                        .addComponent(labelComplement)
+                                        .addGap(0, 275, Short.MAX_VALUE)))
+                                .addContainerGap())))
+                    .addGroup(addressPanelLayout.createSequentialGroup()
+                        .addGroup(addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(addressPanelLayout.createSequentialGroup()
+                                .addGroup(addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelCity)
+                                    .addComponent(inputCity, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(inputState)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(inputCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(addressPanelLayout.createSequentialGroup()
                                 .addComponent(labelZipCode)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(inputZipCode, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 148, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addComponent(inputZipCode, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         addressPanelLayout.setVerticalGroup(
             addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -450,41 +540,50 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
                     .addGroup(addressPanelLayout.createSequentialGroup()
                         .addComponent(labelStreet)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(inputStreet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(inputStreet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(addressPanelLayout.createSequentialGroup()
                         .addGroup(addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelNumber)
-                            .addComponent(labelComplement))
+                            .addComponent(labelComplement)
+                            .addComponent(labelNumber))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(inputComplement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(inputComplement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(addressPanelLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(inputNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(addressPanelLayout.createSequentialGroup()
-                        .addComponent(labelCountry)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(inputCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(labelState)
+                        .addGap(29, 29, 29))
                     .addGroup(addressPanelLayout.createSequentialGroup()
-                        .addGroup(addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelCity)
-                            .addComponent(labelState))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(addressPanelLayout.createSequentialGroup()
+                                .addComponent(labelCity)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, addressPanelLayout.createSequentialGroup()
+                                .addComponent(labelCountry)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGroup(addressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(inputCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputState, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(inputState, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(0, 12, Short.MAX_VALUE))
         );
 
         labelCity.getAccessibleContext().setAccessibleName("");
 
+        checkAddress.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
         checkAddress.setText("Address");
 
         radioGroup.add(radioExisting);
+        radioExisting.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
         radioExisting.setText("Existing");
 
         radioGroup.add(radioNew);
+        radioNew.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
         radioNew.setText("New");
+
+        comboAddress.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -492,97 +591,98 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, mainPanelLayout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addComponent(comboAddress, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(mainPanelLayout.createSequentialGroup()
-                                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(mainPanelLayout.createSequentialGroup()
-                                            .addContainerGap()
-                                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addGroup(mainPanelLayout.createSequentialGroup()
-                                                    .addComponent(comboRole, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                    .addComponent(inputLicenseNumber))
-                                                .addGroup(mainPanelLayout.createSequentialGroup()
-                                                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(inputName, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(labelRole))
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(mainPanelLayout.createSequentialGroup()
-                                                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                .addComponent(labelLicenseNumber)
-                                                                .addComponent(labelSocialSecurityNumber))
-                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE))
-                                                        .addComponent(inputSocialSecurityNumber)))))
-                                        .addGroup(mainPanelLayout.createSequentialGroup()
-                                            .addGap(10, 10, 10)
-                                            .addComponent(labelName)))
-                                    .addGap(12, 12, 12)
-                                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(labelEmail)
-                                        .addComponent(inputEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(labelPhoneNumber)
-                                        .addComponent(inputPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(mainPanelLayout.createSequentialGroup()
                                 .addContainerGap()
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(labelRole)
+                                    .addComponent(inputName)
+                                    .addComponent(comboRole, 0, 282, Short.MAX_VALUE)))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(labelName)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(inputLicenseNumber)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(addressPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(mainPanelLayout.createSequentialGroup()
-                                        .addComponent(checkAddress)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(radioExisting)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(radioNew)))))
-                        .addGap(0, 1, Short.MAX_VALUE))
+                                    .addComponent(labelLicenseNumber)
+                                    .addComponent(labelSocialSecurityNumber))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(inputSocialSecurityNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(inputPhoneNumber)
+                            .addComponent(inputEmail)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelPhoneNumber)
+                                    .addComponent(labelEmail))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(comboAddress, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(separator)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(checkAddress)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(radioExisting)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(radioNew)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(addressPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(buttonSave)))
+                        .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelName)
-                    .addComponent(labelSocialSecurityNumber)
-                    .addComponent(labelEmail))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(inputName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inputSocialSecurityNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inputEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addComponent(labelName)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(inputName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelRole)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelRole)
-                            .addComponent(labelLicenseNumber))
+                            .addComponent(labelSocialSecurityNumber)
+                            .addComponent(labelEmail))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(comboRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputLicenseNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(labelPhoneNumber)
+                            .addComponent(inputSocialSecurityNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(inputPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(labelLicenseNumber)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(inputLicenseNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(labelPhoneNumber)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(inputPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(18, 18, 18)
+                .addComponent(separator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(checkAddress)
                     .addComponent(radioExisting)
                     .addComponent(radioNew))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(comboAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(addressPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonSave)
-                .addGap(29, 29, 29))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         labelSocialSecurityNumber.getAccessibleContext().setAccessibleName("");
@@ -601,7 +701,7 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 355, Short.MAX_VALUE)
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -683,5 +783,6 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
     private javax.swing.JRadioButton radioExisting;
     private javax.swing.ButtonGroup radioGroup;
     private javax.swing.JRadioButton radioNew;
+    private javax.swing.JSeparator separator;
     // End of variables declaration//GEN-END:variables
 }
