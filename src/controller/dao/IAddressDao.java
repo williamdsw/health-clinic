@@ -10,4 +10,5 @@ public interface IAddressDao {
     public boolean delete (Integer id) throws Exception;
     public Address getById (Integer id) throws Exception;
     public List<Address> listAll () throws Exception;
+    public Integer getLastId () throws Exception;
 }

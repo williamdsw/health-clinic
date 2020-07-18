@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.ButtonGroup" name="radioGroup">
+    </Component>
+  </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="title" type="java.lang.String" value="Employee"/>
@@ -30,8 +34,8 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="mainPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <Component id="mainPanel" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -39,8 +43,8 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="mainPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <Component id="mainPanel" pref="355" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -61,46 +65,77 @@
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="comboRole" min="-2" pref="212" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="inputLicenseNumber" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="comboAddress" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <Component id="comboRole" min="-2" pref="212" max="-2" attributes="0"/>
+                                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                      <Component id="inputLicenseNumber" max="32767" attributes="0"/>
+                                                  </Group>
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <Group type="103" groupAlignment="0" attributes="0">
+                                                          <Component id="inputName" alignment="0" min="-2" pref="212" max="-2" attributes="0"/>
+                                                          <Component id="labelRole" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                      </Group>
+                                                      <EmptySpace max="-2" attributes="0"/>
+                                                      <Group type="103" groupAlignment="0" attributes="0">
+                                                          <Group type="102" attributes="0">
+                                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                                  <Component id="labelLicenseNumber" min="-2" max="-2" attributes="0"/>
+                                                                  <Component id="labelSocialSecurityNumber" min="-2" max="-2" attributes="0"/>
+                                                              </Group>
+                                                              <EmptySpace pref="77" max="32767" attributes="0"/>
+                                                          </Group>
+                                                          <Component id="inputSocialSecurityNumber" max="32767" attributes="0"/>
+                                                      </Group>
+                                                  </Group>
+                                              </Group>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                                              <Component id="labelName" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="labelEmail" min="-2" max="-2" attributes="0"/>
+                                          <Component id="inputEmail" min="-2" pref="136" max="-2" attributes="0"/>
+                                          <Component id="labelPhoneNumber" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="inputPhoneNumber" alignment="0" min="-2" pref="136" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="inputName" alignment="0" min="-2" pref="212" max="-2" attributes="0"/>
-                                      <Component id="labelRole" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="addressPanel" min="-2" max="-2" attributes="0"/>
                                       <Group type="102" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="labelLicenseNumber" min="-2" max="-2" attributes="0"/>
-                                              <Component id="labelSocialSecurityNumber" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace pref="77" max="32767" attributes="0"/>
+                                          <Component id="checkAddress" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="radioExisting" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="radioNew" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <Component id="inputSocialSecurityNumber" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
+                          <EmptySpace min="0" pref="1" max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                          <Component id="labelName" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="321" max="-2" attributes="0"/>
-                          <Component id="buttonCreate" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="addressPanel" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="buttonSave" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -111,26 +146,46 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="labelName" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="labelSocialSecurityNumber" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelEmail" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="inputName" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="inputSocialSecurityNumber" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="inputEmail" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="labelRole" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelLicenseNumber" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="comboRole" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="inputLicenseNumber" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="labelPhoneNumber" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="inputPhoneNumber" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="labelRole" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="labelLicenseNumber" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="checkAddress" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="radioExisting" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="radioNew" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="comboRole" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="inputLicenseNumber" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="comboAddress" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="addressPanel" max="32767" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="buttonCreate" min="-2" max="-2" attributes="0"/>
+                  <Component id="addressPanel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="buttonSave" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -160,32 +215,50 @@
             <Property name="name" type="java.lang.String" value="lbl_CARGO" noResource="true"/>
           </Properties>
         </Component>
+        <Component class="javax.swing.JLabel" name="labelLicenseNumber">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="* License Number:"/>
+            <Property name="name" type="java.lang.String" value="lbl_CRM" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelEmail">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="* E-mail:"/>
+            <Property name="name" type="java.lang.String" value="lbl_CPF" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelPhoneNumber">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Phone Number:"/>
+            <Property name="name" type="java.lang.String" value="lbl_CPF" noResource="true"/>
+          </Properties>
+        </Component>
         <Component class="javax.swing.JTextField" name="inputName">
           <Properties>
             <Property name="name" type="java.lang.String" value="txt_NOME" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="buttonCreate">
+        <Component class="javax.swing.JTextField" name="inputLicenseNumber">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Cadastrar"/>
-            <Property name="name" type="java.lang.String" value="bnt_CADASTRAR" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="txt_CRM" noResource="true"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonCreateActionPerformed"/>
-          </Events>
+        </Component>
+        <Component class="javax.swing.JTextField" name="inputEmail">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="txt_NOME" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="inputPhoneNumber">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="txt_NOME" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="inputSocialSecurityNumber">
         </Component>
         <Component class="javax.swing.JComboBox" name="comboRole">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="7">
-                <StringItem index="0" value="Operador"/>
-                <StringItem index="1" value="Cl&#xed;nico Geral"/>
-                <StringItem index="2" value="Dermatologia"/>
-                <StringItem index="3" value="Neurologia"/>
-                <StringItem index="4" value="Oftalmologia"/>
-                <StringItem index="5" value="Ortopedia"/>
-                <StringItem index="6" value="Pediatria"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="name" type="java.lang.String" value="cmb_CARGO" noResource="true"/>
@@ -197,25 +270,20 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="inputSocialSecurityNumber">
+        <Component class="javax.swing.JButton" name="buttonSave">
           <Properties>
-            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
-              <Format format="" subtype="-1" type="5"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value=""/>
+            <Property name="text" type="java.lang.String" value="Save"/>
+            <Property name="name" type="java.lang.String" value="bnt_CADASTRAR" noResource="true"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="addressPanel">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Address:"/>
+                <TitledBorder title="New Address"/>
               </Border>
             </Property>
           </Properties>
-          <AccessibilityProperties>
-            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Address:"/>
-          </AccessibilityProperties>
 
           <Layout>
             <DimensionLayout dim="0">
@@ -224,24 +292,17 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="labelZipCode" min="-2" max="-2" attributes="0"/>
+                              <Component id="inputStreet" min="-2" pref="160" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="inputZipCode" min="-2" pref="299" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="inputNumber" min="-2" pref="119" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="inputComplement" max="32767" attributes="0"/>
                           </Group>
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="labelStreet" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="inputStreet" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="inputNumber" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
-                                          <Component id="labelNumber" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="labelState" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
+                                      <EmptySpace min="172" pref="172" max="-2" attributes="0"/>
+                                      <Component id="labelState" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="inputCity" min="-2" pref="160" max="-2" attributes="0"/>
@@ -252,19 +313,32 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="inputComplement" max="32767" attributes="0"/>
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="labelComplement" min="-2" max="-2" attributes="0"/>
-                                          <Component id="labelCountry" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="labelCountry" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                                   <Component id="inputCountry" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="labelStreet" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="137" max="-2" attributes="0"/>
+                                      <Component id="labelNumber" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
+                                      <Component id="labelComplement" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="labelZipCode" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="inputZipCode" min="-2" pref="299" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="0" pref="148" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -272,38 +346,37 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelZipCode" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="inputZipCode" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="labelStreet" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="inputStreet" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="inputNumber" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="labelNumber" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelComplement" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="inputComplement" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
                               <Component id="labelCountry" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="inputCountry" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="labelZipCode" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="inputZipCode" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="labelStreet" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="inputStreet" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="labelNumber" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="labelComplement" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="inputNumber" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="inputComplement" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="labelCity" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="labelState" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -315,7 +388,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace min="0" pref="40" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="12" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -329,16 +402,6 @@
               <AccessibilityProperties>
                 <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
               </AccessibilityProperties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="inputCity">
-              <Properties>
-                <Property name="name" type="java.lang.String" value="txt_CIDADE" noResource="true"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="inputStreet">
-              <Properties>
-                <Property name="name" type="java.lang.String" value="txt_BAIRRO" noResource="true"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="labelStreet">
               <Properties>
@@ -358,33 +421,11 @@
                 <Property name="name" type="java.lang.String" value="lnl_NUM" noResource="true"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="inputNumber">
-              <Properties>
-                <Property name="name" type="java.lang.String" value="txt_NUM" noResource="true"/>
-              </Properties>
-            </Component>
             <Component class="javax.swing.JLabel" name="labelState">
               <Properties>
                 <Property name="text" type="java.lang.String" value="State:"/>
                 <Property name="name" type="java.lang.String" value="lbl_UF" noResource="true"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="inputComplement">
-              <Properties>
-                <Property name="name" type="java.lang.String" value="txt_COMPLEMENTO" noResource="true"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JFormattedTextField" name="inputZipCode">
-              <Properties>
-                <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
-                  <Format format="" subtype="-1" type="5"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="inputZipCodeActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JTextField" name="inputState">
             </Component>
             <Component class="javax.swing.JLabel" name="labelComplement">
               <Properties>
@@ -398,23 +439,69 @@
                 <Property name="name" type="java.lang.String" value="lbl_UF" noResource="true"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JTextField" name="inputCity">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="txt_CIDADE" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="inputStreet">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="txt_BAIRRO" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="inputNumber">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="txt_NUM" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="inputComplement">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="txt_COMPLEMENTO" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="inputState">
+            </Component>
             <Component class="javax.swing.JTextField" name="inputCountry">
+            </Component>
+            <Component class="javax.swing.JFormattedTextField" name="inputZipCode">
+              <Properties>
+                <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+                  <Format format="" subtype="-1" type="0"/>
+                </Property>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JTextField" name="inputLicenseNumber">
+        <Component class="javax.swing.JCheckBox" name="checkAddress">
           <Properties>
-            <Property name="name" type="java.lang.String" value="txt_CRM" noResource="true"/>
+            <Property name="text" type="java.lang.String" value="Address"/>
           </Properties>
-          <Events>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="inputLicenseNumberKeyTyped"/>
-          </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="labelLicenseNumber">
+        <Component class="javax.swing.JRadioButton" name="radioExisting">
           <Properties>
-            <Property name="text" type="java.lang.String" value="* License Number:"/>
-            <Property name="name" type="java.lang.String" value="lbl_CRM" noResource="true"/>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="radioGroup"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Existing"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="radioNew">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="radioGroup"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="New"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="comboAddress">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

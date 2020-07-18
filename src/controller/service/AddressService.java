@@ -156,7 +156,7 @@ public class AddressService implements IAddressDao {
 
     @Override
     public List<Address> listAll() throws Exception {
-        List<Address> addresss = new ArrayList<>();
+        List<Address> addresses = new ArrayList<>();
         
         String query = " SELECT " +
                        " id, city, state, country, street, number, complement, zip_code, created_at, updated_at " + 
@@ -180,7 +180,7 @@ public class AddressService implements IAddressDao {
                     address.setCreatedAt(resultSet.getTimestamp("created_at"));
                     address.setUpdatedAt(resultSet.getTimestamp("updated_at"));
                     
-                    addresss.add(address);
+                    addresses.add(address);
                 }
             }
         }
@@ -191,6 +191,31 @@ public class AddressService implements IAddressDao {
             DatabaseConnection.disconnect(connection);
         }
         
-        return addresss;
+        return addresses;
+    }
+    
+    @Override
+    public Integer getLastId () throws Exception {
+        Integer lastId = 0;
+        
+        String query = " SELECT MAX (id) AS last_id " + 
+                       " FROM address ";
+        
+        connection = DatabaseConnection.connect();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    lastId = resultSet.getInt("last_id");
+                }
+            }
+        }
+        catch (Exception ex) {
+            System.out.println("AddressService:215 = " + ex.getMessage());
+        }
+        finally {
+            DatabaseConnection.disconnect(connection);
+        }
+        
+        return lastId;
     }
 }
