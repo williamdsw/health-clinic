@@ -1,7 +1,7 @@
 package view;
 
 import controller.service.AddressService;
-import controller.service.EmployeeService;
+import controller.service.PatientService;
 import controller.service.ZipCodeService;
 import java.awt.Component;
 import java.awt.Font;
@@ -18,46 +18,23 @@ import javax.swing.JOptionPane;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 import model.Address;
-import model.Employee;
+import model.Patient;
 import model.ZipCode;
 
-public class CreateUpdateEmployee extends javax.swing.JFrame {
+public class CreateUpdatePatient extends javax.swing.JFrame {
     
     // FIELDS
     
-    private Employee employee = null;
+    private Patient patient = null;
     private final AddressService addressService = new AddressService();
-    private final EmployeeService service = new EmployeeService();
+    private final PatientService service = new PatientService();
     private final ZipCodeService zipCodeService = new ZipCodeService();
-    private boolean isUpdate = false;
-    
-    // SETTERS
-
-    public void setIsUpdate (boolean isUpdate)
-    {
-        this.isUpdate = isUpdate;
-    }
 
     // FUNCTIONS
     
     private void setComboLists () {
         
         try {
-            String[] roles = {
-                "Select a role",
-                "Demartologist",
-                "General Practitioner",
-                "Neurologist",
-                "Ophthalmologist",
-                "Operator",
-                "Orthopedist",
-                "Pediatrician"
-            };
-
-            comboRole.removeAllItems();
-            for (String role : roles) {
-                comboRole.addItem(role);
-            }
 
             comboAddress.removeAllItems();
             comboAddress.addItem("Select a address");
@@ -71,7 +48,7 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
             });
         }
         catch (Exception ex) {
-            System.out.println("CreateUpdateEmployee:66 = " + ex.getMessage());
+            System.out.println("CreateUpdatePatient:51 = " + ex.getMessage());
         }
     }
     
@@ -86,7 +63,7 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
     private void setComponentsDefaultValues () {
         
         try {
-            this.setTitle("Employee");
+            this.setTitle("Patient");
             this.setResizable(false);
             comboAddress.setEnabled(false);
             checkAddress.setSelected(false);
@@ -100,23 +77,22 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
             Font inputFont = new Font("Monospaced", Font.PLAIN, 16);
 
             JLabel[] labels = {
-                labelCity, labelComplement, labelLicenseNumber,
-                labelName, labelNumber, labelRole, labelSocialSecurityNumber,
-                labelState, labelStreet, labelZipCode, labelCountry, labelEmail,
-                labelPhoneNumber
+                labelCity, labelComplement, labelName, labelNumber, 
+                labelSocialSecurityNumber, labelState, labelStreet, labelZipCode, 
+                labelCountry, labelEmail, labelPhoneNumber
             };
 
             JComponent[] inputs = {
-                inputCity, inputComplement, inputLicenseNumber, inputName, inputNumber,
-                comboRole, inputSocialSecurityNumber, inputState, inputStreet, inputZipCode,
+                inputCity, inputComplement, inputName, inputNumber,
+                inputSocialSecurityNumber, inputState, inputStreet, inputZipCode,
                 inputCountry, inputEmail, inputPhoneNumber, checkAddress, radioExisting,
                 radioNew, comboAddress
             };
 
             String[] labelsTexts = {
-                "* City ", "Complement", "* License Number ", "* Name ", "Number",
-                "* Role ", "* SSN ", "* State ", "* Street ", "* Zip Code ", "* Country",
-                "* Email", "Phone Number"
+                "* City ", "Complement", "* Name ", "Number", "* SSN ", 
+                "* State ", "* Street ", "* Zip Code ", "* Country", "* Email", 
+                "Phone Number"
             };
 
             int index = 0;
@@ -146,16 +122,8 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
     private void validation (boolean isUpdate) {
         Set<String> requiredFields = new HashSet<>();
 
-        if (inputLicenseNumber.getText().isEmpty()) {
-            requiredFields.add(labelLicenseNumber.getText());
-        }
-
         if (inputName.getText().isEmpty()) {
             requiredFields.add(labelName.getText());
-        }
-
-        if (comboRole.getSelectedIndex() == 0) {
-            requiredFields.add(labelRole.getText());
         }
 
         if (inputSocialSecurityNumber.getText().isEmpty() || inputSocialSecurityNumber.getText().trim().length() != 11) {
@@ -200,13 +168,11 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
     private void save (boolean isUpdate) {
         
         try {
-            Timestamp createdAt = (isUpdate ? employee.getCreatedAt() : new Timestamp(System.currentTimeMillis ()));
+            Timestamp createdAt = (isUpdate ? patient.getCreatedAt() : new Timestamp(System.currentTimeMillis ()));
             String email = inputEmail.getText();
-            Integer id = (isUpdate ? employee.getId() : 0);
-            String licenseNumber = inputLicenseNumber.getText();
+            Integer id = (isUpdate ? patient.getId() : 0);
             String name = inputName.getText();
             String phoneNumber = inputPhoneNumber.getText();
-            String role = comboRole.getItemAt(comboRole.getSelectedIndex());
             String socialSecurityNumber = inputSocialSecurityNumber.getText();
             Timestamp updatedAt = new Timestamp(System.currentTimeMillis());
             boolean canSucceed = true;
@@ -219,11 +185,11 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
                     address.setId(Integer.parseInt(selectedValue));
                 }
                 else if (radioNew.isSelected()) {
-                    address.setId(isUpdate ? employee.getAddress().getId() : 0);
+                    address.setId(isUpdate ? patient.getAddress().getId() : 0);
                     address.setCity(inputCity.getText());
                     address.setComplement(inputComplement.getText());
                     address.setCountry(inputCountry.getText());
-                    address.setCreatedAt(isUpdate ? employee.getAddress().getCreatedAt(): new Timestamp(System.currentTimeMillis()));
+                    address.setCreatedAt(isUpdate ? patient.getAddress().getCreatedAt(): new Timestamp(System.currentTimeMillis()));
                     address.setNumber(inputNumber.getText());
                     address.setState(inputState.getText());
                     address.setStreet(inputStreet.getText());
@@ -243,21 +209,19 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
             if (canSucceed) {
                 System.out.println("AddressId: " + address.getId());
             
-                employee = (employee != null ? employee : new Employee());
-                employee.setId(id);
-                employee.setCreatedAt(createdAt);
-                employee.setEmail(email);
-                employee.setLicenseNumber(licenseNumber);
-                employee.setName(name);
-                employee.setPhoneNumber(phoneNumber);
-                employee.setRole(role);
-                employee.setSocialSecurityNumber(socialSecurityNumber);
-                employee.setUpdatedAt(updatedAt);
-                employee.setAddress(address);
+                patient = (patient != null ? patient : new Patient());
+                patient.setId(id);
+                patient.setCreatedAt(createdAt);
+                patient.setEmail(email);
+                patient.setName(name);
+                patient.setPhoneNumber(phoneNumber);
+                patient.setSocialSecurityNumber(socialSecurityNumber);
+                patient.setUpdatedAt(updatedAt);
+                patient.setAddress(address);
 
-                boolean success = (isUpdate ? service.update(employee) : service.insert(employee));
+                boolean success = (isUpdate ? service.update(patient) : service.insert(patient));
                 if (success) {
-                    JOptionPane.showConfirmDialog(this, "Operation has succeed! Go to employers search?", "Success", JOptionPane.INFORMATION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+                    JOptionPane.showConfirmDialog(this, "Operation has succeed! Go to patient search?", "Success", JOptionPane.INFORMATION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
                 }
                 else {
                     JOptionPane.showMessageDialog(this, "This operation has failed", "Error", JOptionPane.ERROR_MESSAGE);
@@ -309,7 +273,7 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
                             if (zipCodeResult.getError() != null) {
                                 inputZipCode.setText(null);
                                 inputZipCode.setEnabled(true);
-                                JOptionPane.showMessageDialog(CreateUpdateEmployee.this, zipCodeResult.getError());
+                                JOptionPane.showMessageDialog(CreateUpdatePatient.this, zipCodeResult.getError());
                             } 
                             else {
                                 inputZipCode.setEnabled(true);
@@ -329,12 +293,12 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
         buttonSave.addActionListener ((ev) -> {
             
             System.out.println ("Clicked");
-            validation(isUpdate);
+            validation(false);
             
         });
     }
 
-    public CreateUpdateEmployee() {
+    public CreateUpdatePatient() {
         initComponents();
         setComponentsDefaultValues();
         setComboLists();
@@ -348,22 +312,19 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         radioGroup = new javax.swing.ButtonGroup();
         mainPanel = new javax.swing.JPanel();
         labelName = new javax.swing.JLabel();
         labelSocialSecurityNumber = new javax.swing.JLabel();
-        labelRole = new javax.swing.JLabel();
-        labelLicenseNumber = new javax.swing.JLabel();
         labelEmail = new javax.swing.JLabel();
         labelPhoneNumber = new javax.swing.JLabel();
         inputName = new javax.swing.JTextField();
-        inputLicenseNumber = new javax.swing.JTextField();
         inputEmail = new javax.swing.JTextField();
         inputPhoneNumber = new javax.swing.JTextField();
         inputSocialSecurityNumber = new javax.swing.JFormattedTextField();
-        comboRole = new javax.swing.JComboBox<>();
         buttonSave = new javax.swing.JButton();
         addressPanel = new javax.swing.JPanel();
         labelCity = new javax.swing.JLabel();
@@ -401,14 +362,6 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
         labelSocialSecurityNumber.setText("* SSN:");
         labelSocialSecurityNumber.setName("lbl_CPF"); // NOI18N
 
-        labelRole.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
-        labelRole.setText("* Role:");
-        labelRole.setName("lbl_CARGO"); // NOI18N
-
-        labelLicenseNumber.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
-        labelLicenseNumber.setText("* License Number:");
-        labelLicenseNumber.setName("lbl_CRM"); // NOI18N
-
         labelEmail.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
         labelEmail.setText("* E-mail:");
         labelEmail.setName("lbl_CPF"); // NOI18N
@@ -420,9 +373,6 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
         inputName.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
         inputName.setName("txt_NOME"); // NOI18N
 
-        inputLicenseNumber.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
-        inputLicenseNumber.setName("txt_CRM"); // NOI18N
-
         inputEmail.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
         inputEmail.setName("txt_NOME"); // NOI18N
 
@@ -430,9 +380,6 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
         inputPhoneNumber.setName("txt_NOME"); // NOI18N
 
         inputSocialSecurityNumber.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
-
-        comboRole.setToolTipText("");
-        comboRole.setName("cmb_CARGO"); // NOI18N
 
         buttonSave.setFont(new java.awt.Font("Monospaced", 1, 16)); // NOI18N
         buttonSave.setText("Save");
@@ -600,34 +547,12 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(labelRole)
-                                    .addComponent(inputName)
-                                    .addComponent(comboRole, 0, 282, Short.MAX_VALUE)))
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(labelName)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(inputLicenseNumber)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelLicenseNumber)
-                                    .addComponent(labelSocialSecurityNumber))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(inputSocialSecurityNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(inputPhoneNumber)
-                            .addComponent(inputEmail)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelPhoneNumber)
-                                    .addComponent(labelEmail))
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(10, 10, 10)
+                        .addComponent(labelName)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -640,10 +565,21 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(radioNew)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(addressPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(addressPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(inputEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                                    .addComponent(labelEmail)
+                                    .addComponent(inputName))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(inputPhoneNumber)
+                                    .addGroup(mainPanelLayout.createSequentialGroup()
+                                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(labelSocialSecurityNumber)
+                                            .addComponent(labelPhoneNumber))
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(inputSocialSecurityNumber))))))
                 .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
@@ -655,28 +591,18 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
                         .addComponent(labelName)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(inputName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(labelEmail)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(labelRole)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(inputEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelSocialSecurityNumber)
-                            .addComponent(labelEmail))
+                        .addComponent(labelSocialSecurityNumber)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(inputSocialSecurityNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(inputSocialSecurityNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(labelLicenseNumber)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(inputLicenseNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(labelPhoneNumber)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(inputPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(labelPhoneNumber)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(inputPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(separator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -694,7 +620,6 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
         );
 
         labelSocialSecurityNumber.getAccessibleContext().setAccessibleName("");
-        comboRole.getAccessibleContext().setAccessibleName("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -733,14 +658,18 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CreateUpdateEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CreateUpdatePatient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CreateUpdateEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CreateUpdatePatient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CreateUpdateEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CreateUpdatePatient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CreateUpdateEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CreateUpdatePatient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -749,7 +678,7 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CreateUpdateEmployee().setVisible(true);
+                new CreateUpdatePatient().setVisible(true);
             }
         });
     }
@@ -761,12 +690,10 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
     private javax.swing.JButton buttonSave;
     private javax.swing.JCheckBox checkAddress;
     private javax.swing.JComboBox<String> comboAddress;
-    private javax.swing.JComboBox<String> comboRole;
     private javax.swing.JTextField inputCity;
     private javax.swing.JTextField inputComplement;
     private javax.swing.JTextField inputCountry;
     private javax.swing.JTextField inputEmail;
-    private javax.swing.JTextField inputLicenseNumber;
     private javax.swing.JTextField inputName;
     private javax.swing.JTextField inputNumber;
     private javax.swing.JTextField inputPhoneNumber;
@@ -778,11 +705,9 @@ public class CreateUpdateEmployee extends javax.swing.JFrame {
     private javax.swing.JLabel labelComplement;
     private javax.swing.JLabel labelCountry;
     private javax.swing.JLabel labelEmail;
-    private javax.swing.JLabel labelLicenseNumber;
     private javax.swing.JLabel labelName;
     private javax.swing.JLabel labelNumber;
     private javax.swing.JLabel labelPhoneNumber;
-    private javax.swing.JLabel labelRole;
     private javax.swing.JLabel labelSocialSecurityNumber;
     private javax.swing.JLabel labelState;
     private javax.swing.JLabel labelStreet;

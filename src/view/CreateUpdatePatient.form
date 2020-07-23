@@ -65,41 +65,15 @@
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="labelRole" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="inputName" max="32767" attributes="0"/>
-                                      <Component id="comboRole" alignment="0" pref="282" max="32767" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                                  <Component id="labelName" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="inputLicenseNumber" alignment="0" max="32767" attributes="0"/>
-                              <Component id="labelLicenseNumber" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelSocialSecurityNumber" min="-2" max="-2" attributes="0"/>
-                              <Component id="inputSocialSecurityNumber" min="-2" pref="247" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="inputPhoneNumber" alignment="0" max="32767" attributes="0"/>
-                              <Component id="inputEmail" max="32767" attributes="0"/>
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="labelPhoneNumber" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="labelEmail" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
+                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                          <Component id="labelName" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="buttonSave" min="-2" pref="103" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="comboAddress" alignment="0" max="32767" attributes="0"/>
@@ -113,11 +87,26 @@
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                               <Component id="addressPanel" alignment="1" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="inputEmail" pref="400" max="32767" attributes="0"/>
+                                      <Component id="labelEmail" min="-2" max="-2" attributes="0"/>
+                                      <Component id="inputName" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="inputPhoneNumber" alignment="0" max="32767" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="labelSocialSecurityNumber" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labelPhoneNumber" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Component id="inputSocialSecurityNumber" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
                           </Group>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="buttonSave" min="-2" pref="103" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -133,34 +122,19 @@
                           <Component id="labelName" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="inputName" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                          <Component id="labelEmail" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="labelRole" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="comboRole" min="-2" max="-2" attributes="0"/>
+                          <Component id="inputEmail" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="labelSocialSecurityNumber" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelEmail" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="labelSocialSecurityNumber" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="inputSocialSecurityNumber" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="inputEmail" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="inputSocialSecurityNumber" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="labelLicenseNumber" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="inputLicenseNumber" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Component id="labelPhoneNumber" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="inputPhoneNumber" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
+                          <Component id="labelPhoneNumber" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="inputPhoneNumber" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -204,24 +178,6 @@
             <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
           </AccessibilityProperties>
         </Component>
-        <Component class="javax.swing.JLabel" name="labelRole">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Monospaced" size="16" style="1"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="* Role:"/>
-            <Property name="name" type="java.lang.String" value="lbl_CARGO" noResource="true"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="labelLicenseNumber">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Monospaced" size="16" style="1"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="* License Number:"/>
-            <Property name="name" type="java.lang.String" value="lbl_CRM" noResource="true"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="labelEmail">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -248,14 +204,6 @@
             <Property name="name" type="java.lang.String" value="txt_NOME" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="inputLicenseNumber">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Monospaced" size="16" style="0"/>
-            </Property>
-            <Property name="name" type="java.lang.String" value="txt_CRM" noResource="true"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JTextField" name="inputEmail">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -278,21 +226,6 @@
               <Font name="Monospaced" size="16" style="0"/>
             </Property>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="comboRole">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
-            <Property name="toolTipText" type="java.lang.String" value=""/>
-            <Property name="name" type="java.lang.String" value="cmb_CARGO" noResource="true"/>
-          </Properties>
-          <AccessibilityProperties>
-            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
-          </AccessibilityProperties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="buttonSave">
           <Properties>
